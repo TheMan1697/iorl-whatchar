@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+
+const title = 'Contact | Iorl - WhatChar';
+const description = 'Contact Iorl - WhatChar for feedback, bug reports, or questions about the Unicode character checker.';
+
+const contactEmail = 'contact@isitiorl.com';
+---
+
+<BaseLayout title={title} description={description} lang="en" locale="en" path="/contact/">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Iorl - WhatChar home">Iorl - WhatChar</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="seo-copy legal-page">
+      <h1>Contact</h1>
+
+      <p>
+        For feedback, bug reports, or questions about Iorl - WhatChar, please contact:
+      </p>
+
+      <p>
+        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+      </p>
+
+      <p>
+        If you find a confusing character that is not detected correctly, include the exact
+        text or character in your message so it can be reviewed.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span><a href="/">Home</a></span>
+    <span><a href="/about/">About</a></span>
+    <span><a href="/privacy/">Privacy</a></span>
+  </footer>
+</BaseLayout>

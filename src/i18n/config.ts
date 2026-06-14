@@ -1,6 +1,6 @@
 export type Locale = 'en' | 'ko' | 'ja' | 'zh' | 'es' | 'fr' | 'de';
 
-export const siteUrl = 'https://iorl-whatchar.pages.dev';
+export const siteUrl = 'https://isitiorl.com';
 
 export const locales: Locale[] = ['en', 'ko', 'ja', 'zh', 'es', 'fr', 'de'];
 

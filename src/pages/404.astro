@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout
+  title="Page not found | Iorl - WhatChar"
+  description="The page you are looking for could not be found."
+  lang="en"
+  locale="en"
+  path="/404/"
+>
+  <header class="topbar">
+    <a class="brand" href="/">Iorl - WhatChar</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="seo-copy legal-page">
+      <h1>Page not found</h1>
+      <p>The page you are looking for does not exist or may have moved.</p>
+      <p><a href="/">Go back to the Unicode character checker</a></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <nav class="footer-links" aria-label="Site links">
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </footer>
+</BaseLayout>

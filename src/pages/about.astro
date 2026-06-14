@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
+
+const title = 'About | Iorl - WhatChar';
+const description = 'Learn what Iorl - WhatChar does and why confusing Unicode characters, homoglyphs, and invisible spaces matter.';
+---
+
+<BaseLayout title={title} description={description} lang="en" locale="en" path="/about/">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Iorl - WhatChar home">Iorl - WhatChar</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="seo-copy legal-page">
+      <h1>About Iorl - WhatChar</h1>
+
+      <p>
+        Iorl - WhatChar is a small browser-based tool for checking confusing Unicode characters.
+        It helps identify characters that look similar, such as lowercase l, uppercase I,
+        digit 1, Latin O, digit 0, Greek and Cyrillic lookalikes, Hangul lookalikes,
+        fullwidth forms, punctuation variants, and invisible spaces.
+      </p>
+
+      <p>
+        The tool is designed for people who need to inspect suspicious text, usernames,
+        domains, code snippets, social media posts, or copied text where visually similar
+        characters may be confusing.
+      </p>
+
+      <p>
+        All analysis runs locally in your browser. The text you paste is not sent to a server.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span><a href="/">Home</a></span>
+    <span><a href="/contact/">Contact</a></span>
+    <span><a href="/privacy/">Privacy</a></span>
+  </footer>
+</BaseLayout>

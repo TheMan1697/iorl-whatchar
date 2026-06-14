@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 
 export default defineConfig({
-  site: 'https://iorl-whatchar.pages.dev',
+  site: 'https://isitiorl.com',
   integrations: [react()],
   output: 'static',
   prefetch: true
