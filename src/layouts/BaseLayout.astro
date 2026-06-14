@@ -1,0 +1,56 @@
+---
+import { absoluteUrl, localePaths, locales, type Locale } from '../i18n/config';
+
+const {
+  title = 'Iorl - WhatChar | Confusing Unicode Character Checker',
+  description = 'Paste text to identify confusing Unicode characters like I, l, 1, O, 0, Greek, Cyrillic, Hangul, fullwidth, and invisible spaces.',
+  lang = 'en',
+  locale = 'en'
+} = Astro.props as {
+  title?: string;
+  description?: string;
+  lang?: string;
+  locale?: Locale;
+};
+const canonical = absoluteUrl(localePaths[locale]);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Iorl - WhatChar',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Web',
+  url: canonical,
+  description,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD'
+  }
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Iorl - WhatChar" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#0a1633" />
+    <link rel="icon" href="/favicon.svg" />
+    {locales.map((code) => <link rel="alternate" hreflang={code} href={absoluteUrl(localePaths[code])} />)}
+    <link rel="alternate" hreflang="x-default" href={absoluteUrl('/')} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

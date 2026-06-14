@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Analyzer from '../components/Analyzer';
+import { messages } from '../i18n/messages';
+import { localePaths, locales, type Locale } from '../i18n/config';
+import '../styles/global.css';
+
+const { locale = 'en' } = Astro.props as { locale?: Locale };
+const t = messages[locale];
+---
+<BaseLayout title={t.title} description={t.description} lang={t.lang} locale={locale}>
+  <header class="topbar">
+    <a class="brand" href={localePaths[locale]} aria-label="Iorl - WhatChar home">Iorl - WhatChar</a>
+    <nav class="language" aria-label="Language">
+      {locales.map((code, index) => (
+        <>
+          <a aria-current={code === locale ? 'page' : undefined} href={localePaths[code]}>{code.toUpperCase()}</a>
+          {index < locales.length - 1 && <span>/</span>}
+        </>
+      ))}
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero">
+      <h1 aria-label={t.hero}>
+        Is it <span>I</span>, <span>l</span>, <span>1</span>, <span>O</span>, or <span>0</span>?
+      </h1>
+      <p>{t.subtitle}</p>
+    </section>
+
+    <Analyzer client:load locale={locale} />
+
+    <section class="seo-copy" aria-labelledby="what-checks">
+      <h2 id="what-checks">{t.seoTitle}</h2>
+      <p>{t.seoBody}</p>
+      <div class="mini-grid">
+        {t.seoCards.map((card) => (
+          <div>
+            <strong>{card.title}</strong>
+            <span>{card.body}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>{t.supports}</span>
+    <span>{t.footerPrivacy}</span>
+  </footer>
+</BaseLayout>

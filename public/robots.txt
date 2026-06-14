@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iorl-whatchar.pages.dev/sitemap.xml
