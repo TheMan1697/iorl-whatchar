@@ -1,20 +1,49 @@
 # Iorl - WhatChar
 
-Iorl - WhatChar is a minimal, SEO-first web tool for identifying confusing Unicode characters.
+**Live site:** https://isitiorl.com
 
-It helps distinguish lookalike characters such as `I`, `l`, `1`, `O`, `0`, Greek and Cyrillic homoglyphs, Hangul lookalikes, Japanese/CJK lookalikes, fullwidth characters, punctuation variants, and invisible spaces.
+Iorl - WhatChar is a lightweight web tool for identifying confusing Unicode characters, lookalike letters, homoglyphs, punctuation variants, fullwidth forms, and invisible spaces.
+
+It helps distinguish visually similar characters such as `I`, `l`, `1`, `O`, `0`, Greek and Cyrillic homoglyphs, Hangul lookalikes, Japanese/CJK lookalikes, dash and minus variants, and zero-width spaces.
 
 ## Features
 
 * Detects Unicode lookalike and homoglyph characters
-* Shows the exact character, Unicode code point, script, and name
-* Highlights confusing characters directly in the pasted text
-* Reveals invisible characters such as zero-width spaces and no-break spaces
-* Supports Latin, Greek, Cyrillic, Hangul, Japanese kana, CJK characters, fullwidth forms, and common punctuation variants
-* Runs entirely in the browser
-* Static, fast, and easy to deploy
+* Highlights confusing characters directly in pasted text
+* Shows each character's Unicode code point, script, and name
+* Reveals invisible characters such as zero-width spaces, no-break spaces, and word joiners
+* Supports Latin, Greek, Cyrillic, Hangul, Japanese kana, CJK characters, fullwidth forms, punctuation variants, and common symbol lookalikes
+* Provides localized pages for multiple languages
+* Runs entirely in the browser without sending pasted text to a server
+* Static, fast, mobile-friendly, and SEO-focused
 
-## Run locally
+## Tech Stack
+
+* Astro
+* React
+* TypeScript
+* CSS
+* Cloudflare Pages
+
+## Use Cases
+
+Iorl - WhatChar can be useful when checking:
+
+* `I` vs `l` vs `1`
+* `O` vs `0`
+* Greek or Cyrillic characters that look like Latin letters
+* Hangul, Japanese kana, and CJK lookalikes
+* Fullwidth and halfwidth forms
+* Dash, hyphen, and minus sign variants
+* Hidden zero-width or no-break spaces
+* Suspicious usernames, copied text, identifiers, domains, or code snippets
+
+## Privacy
+
+All analysis runs locally in the browser.
+The pasted text is not sent to a server.
+
+## Run Locally
 
 ```bash
 npm install
@@ -28,9 +57,9 @@ npm run build
 npm run preview
 ```
 
-## Deploy
+## Deployment
 
-This project is static and works well on Cloudflare Pages, Vercel, Netlify, or GitHub Pages.
+This project is deployed on Cloudflare Pages.
 
 Recommended Cloudflare Pages settings:
 
@@ -38,15 +67,25 @@ Recommended Cloudflare Pages settings:
 * Build command: `npm run build`
 * Build output directory: `dist`
 
-## Before production
+## Project Structure
 
-Update production URLs after choosing a domain:
+```txt
+src/
+  components/
+  data/
+  i18n/
+  layouts/
+  pages/
+  styles/
+  utils/
 
-* `astro.config.mjs` site URL
-* `public/robots.txt` sitemap URL
-* `public/sitemap.xml` canonical URLs
-* `src/layouts/BaseLayout.astro` canonical and Open Graph URLs
+public/
+  favicon.svg
+  og-image.png
+  robots.txt
+  sitemap.xml
+```
 
-## Privacy
+## License
 
-All analysis runs locally in the browser. The pasted text is not sent to a server.
+This project is built as a personal web utility.
