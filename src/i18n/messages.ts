@@ -16,7 +16,8 @@ export type Messages = {
   confusingFound: (count: number) => string;
   mixedScripts: string;
   examplesLabel: string;
-  looksLike: string;
+  looksLike: (characters: string[]) => string;
+  zeroWidthSpace: string;
   supports: string;
   footerPrivacy: string;
   seoTitle: string;
@@ -27,7 +28,7 @@ export type Messages = {
 export const messages: Record<Locale, Messages> = {
   en: {
     lang: 'en',
-    title: 'Iorl - WhatChar | I vs l, O vs 0 Unicode Character Checker',
+    title: 'I vs l vs 1 Checker — O vs 0 & Unicode Lookalikes | WhatChar',
     description: 'Paste text to tell I vs l vs 1, O vs 0, and identify confusing Unicode lookalikes, homoglyphs, mixed scripts, fullwidth forms, dash variants, and invisible spaces.',
     hero: 'I, l, 1, O, 0 — find out what they are.',
     subtitle: 'Paste text to identify confusing Unicode characters.',
@@ -41,7 +42,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `${count} confusing character${count === 1 ? '' : 's'} found.`,
     mixedScripts: 'Mixed scripts',
     examplesLabel: 'Examples',
-    looksLike: 'looks like',
+    looksLike: (characters) => `Looks like ${characters.join(', ')}`,
+    zeroWidthSpace: 'zero-width space',
     supports: 'Supports Greek, Cyrillic, Hangul, Japanese kana, CJK characters, fullwidth forms, punctuation variants, invisible spaces, and more.',
     footerPrivacy: 'All analysis runs in your browser.',
     seoTitle: 'I vs l, I vs 1, O vs 0, homoglyphs, and hidden spaces',
@@ -57,7 +59,7 @@ export const messages: Record<Locale, Messages> = {
   },
   ko: {
     lang: 'ko',
-    title: 'Iorl - WhatChar | I l 1 구분, O 0 구분 유니코드 문자 판독기',
+    title: 'I·l·1, O·0 구분기 — 유니코드 유사 문자 판독 | WhatChar',
     description: 'I인지 l인지, 1인지, O인지 0인지 헷갈리는 문자를 붙여넣기만으로 확인하세요. 유니코드 유사 문자, 호모글리프, 한글·일본어·한자 형태, 대시 기호, 숨은 공백까지 찾습니다.',
     hero: 'I, l, 1, O, 0 무엇인지 바로 확인하세요.',
     subtitle: '문자를 붙여넣으면 헷갈리는 유니코드 문자를 찾아드립니다.',
@@ -71,7 +73,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `헷갈릴 수 있는 문자 ${count}개를 찾았습니다.`,
     mixedScripts: '문자권 섞임',
     examplesLabel: '예시',
-    looksLike: '비슷하게 보임',
+    looksLike: (characters) => `${characters.join(', ')}와 유사`,
+    zeroWidthSpace: '보이지 않는 공백',
     supports: '그리스어, 키릴 문자, 한글, 일본어 가나, 한자, 전각문자, 기호 변형, 숨은 공백 등을 지원합니다.',
     footerPrivacy: '모든 분석은 브라우저 안에서만 실행됩니다.',
     seoTitle: 'I l 1 구분, O 0 구분, 유니코드 유사 문자와 숨은 공백 확인',
@@ -87,7 +90,7 @@ export const messages: Record<Locale, Messages> = {
   },
   ja: {
     lang: 'ja',
-    title: 'Iorl - WhatChar | Iとl、Oと0、紛らわしいUnicode文字チェッカー',
+    title: 'I・l・1、O・0 判別チェッカー | WhatChar',
     description: 'I、l、1、O、0の見分け方を確認し、Unicodeの類似文字、ホモグリフ、全角文字、ダッシュの違い、ゼロ幅スペースなどを検出します。',
     hero: 'I, l, 1, O, 0 をすぐ確認。',
     subtitle: 'テキストを貼り付けて、紛らわしいUnicode文字を確認します。',
@@ -101,7 +104,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `${count} 個の紛らわしい文字が見つかりました。`,
     mixedScripts: '文字体系の混在',
     examplesLabel: '例',
-    looksLike: '似ている文字',
+    looksLike: (characters) => `${characters.join('、')} に似ています`,
+    zeroWidthSpace: '見えない空白',
     supports: 'ギリシャ文字、キリル文字、ハングル、日本語かな、CJK文字、全角文字、記号の違い、不可視スペースなどに対応。',
     footerPrivacy: '解析はすべてブラウザ内で実行されます。',
     seoTitle: 'Iとl、Iと1、Oと0、類似文字とゼロ幅スペースを確認',
@@ -117,7 +121,7 @@ export const messages: Record<Locale, Messages> = {
   },
   zh: {
     lang: 'zh-Hans',
-    title: 'Iorl - WhatChar | I 和 l、O 和 0、Unicode 相似字符检测器',
+    title: 'I、l、1 与 O、0 字符识别器 | WhatChar',
     description: '粘贴文本即可区分 I 和 l、I 和 1、O 和 0，并检测 Unicode 相似字符、同形异义字符、全角字符、连字符变体和不可见空格。',
     hero: '立即确认 I、l、1、O、0。',
     subtitle: '粘贴文本，识别容易混淆的 Unicode 字符。',
@@ -131,7 +135,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `发现 ${count} 个易混淆字符。`,
     mixedScripts: '混合文字系统',
     examplesLabel: '示例',
-    looksLike: '看起来像',
+    looksLike: (characters) => `类似于 ${characters.join('、')}`,
+    zeroWidthSpace: '不可见空格',
     supports: '支持希腊字母、西里尔字母、韩文、日文假名、CJK 字符、全角字符、标点变体、不可见空格等。',
     footerPrivacy: '所有分析都在你的浏览器中完成。',
     seoTitle: '区分 I 和 l、I 和 1、O 和 0，检测相似字符和不可见空格',
@@ -147,7 +152,7 @@ export const messages: Record<Locale, Messages> = {
   },
   es: {
     lang: 'es',
-    title: 'Iorl - WhatChar | I vs l, O vs 0 y detector de Unicode confuso',
+    title: 'Distinguir I, l, 1, O y 0 | WhatChar',
     description: 'Pega texto para distinguir I vs l vs 1, O vs 0 y detectar caracteres Unicode parecidos, homógrafos, escrituras mezcladas, guiones, ancho completo y espacios invisibles.',
     hero: 'Identifica I, l, 1, O y 0 al instante.',
     subtitle: 'Pega texto para identificar caracteres Unicode confusos.',
@@ -161,7 +166,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `Se encontraron ${count} caracteres confusos.`,
     mixedScripts: 'Sistemas de escritura mezclados',
     examplesLabel: 'Ejemplos',
-    looksLike: 'parece',
+    looksLike: (characters) => `Se parece a ${characters.join(', ')}`,
+    zeroWidthSpace: 'espacio de ancho cero',
     supports: 'Compatible con griego, cirílico, hangul, kana japonés, CJK, caracteres de ancho completo, variantes de puntuación, espacios invisibles y más.',
     footerPrivacy: 'Todo el análisis se ejecuta en tu navegador.',
     seoTitle: 'I vs l, I vs 1, O vs 0, homógrafos y espacios invisibles',
@@ -177,7 +183,7 @@ export const messages: Record<Locale, Messages> = {
   },
   fr: {
     lang: 'fr',
-    title: 'Iorl - WhatChar | I vs l, O vs 0 et détecteur Unicode confus',
+    title: 'Distinguer I, l, 1, O et 0 | WhatChar',
     description: 'Collez du texte pour distinguer I vs l vs 1, O vs 0 et détecter les caractères Unicode similaires, homoglyphes, écritures mélangées, tirets, pleine chasse et espaces invisibles.',
     hero: 'Identifiez I, l, 1, O et 0 instantanément.',
     subtitle: 'Collez du texte pour identifier les caractères Unicode confus.',
@@ -191,7 +197,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `${count} caractère${count > 1 ? 's' : ''} confus trouvé${count > 1 ? 's' : ''}.`,
     mixedScripts: 'Écritures mélangées',
     examplesLabel: 'Exemples',
-    looksLike: 'ressemble à',
+    looksLike: (characters) => `Ressemble à ${characters.join(', ')}`,
+    zeroWidthSpace: 'espace sans chasse',
     supports: 'Prend en charge le grec, le cyrillique, le hangul, les kana japonais, les caractères CJK, les formes pleine chasse, les variantes de ponctuation, les espaces invisibles, etc.',
     footerPrivacy: 'Toute l’analyse s’exécute dans votre navigateur.',
     seoTitle: 'I vs l, I vs 1, O vs 0, homoglyphes et espaces invisibles',
@@ -207,7 +214,7 @@ export const messages: Record<Locale, Messages> = {
   },
   de: {
     lang: 'de',
-    title: 'Iorl - WhatChar | I vs l, O vs 0 und Unicode-Lookalike-Prüfer',
+    title: 'I, l, 1, O und 0 unterscheiden | WhatChar',
     description: 'Füge Text ein, um I vs l vs 1, O vs 0 und verwirrende Unicode-Lookalikes, Homoglyphen, gemischte Schriften, Bindestriche, Vollbreitenformen und unsichtbare Leerzeichen zu erkennen.',
     hero: 'I, l, 1, O und 0 sofort erkennen.',
     subtitle: 'Füge Text ein, um verwirrende Unicode-Zeichen zu erkennen.',
@@ -221,7 +228,8 @@ export const messages: Record<Locale, Messages> = {
     confusingFound: (count) => `${count} verwirrende Zeichen gefunden.`,
     mixedScripts: 'Gemischte Schriftsysteme',
     examplesLabel: 'Beispiele',
-    looksLike: 'sieht aus wie',
+    looksLike: (characters) => `Ähnelt ${characters.join(', ')}`,
+    zeroWidthSpace: 'Leerzeichen ohne Breite',
     supports: 'Unterstützt Griechisch, Kyrillisch, Hangul, japanische Kana, CJK-Zeichen, Vollbreitenformen, Satzzeichenvarianten, unsichtbare Leerzeichen und mehr.',
     footerPrivacy: 'Die gesamte Analyse läuft in deinem Browser.',
     seoTitle: 'I vs l, I vs 1, O vs 0, Homoglyphen und unsichtbare Leerzeichen',

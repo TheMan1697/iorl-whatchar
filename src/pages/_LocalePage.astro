@@ -7,6 +7,8 @@ import '../styles/global.css';
 
 const { locale = 'en' } = Astro.props as { locale?: Locale };
 const t = messages[locale];
+const heroCharacters = new Set(['I', 'l', '1', 'O', '0']);
+const heroParts = t.hero.split(/(?<![\p{L}\p{N}])([Il1O0])(?![\p{L}\p{N}])/gu);
 ---
 <BaseLayout title={t.title} description={t.description} lang={t.lang} locale={locale}>
   <header class="topbar">
@@ -23,8 +25,8 @@ const t = messages[locale];
 
   <main class="page-shell">
     <section class="hero">
-      <h1 aria-label={t.hero}>
-        Is it <span>I</span>, <span>l</span>, <span>1</span>, <span>O</span>, or <span>0</span>?
+      <h1>
+        {heroParts.map((part) => heroCharacters.has(part) ? <span>{part}</span> : part)}
       </h1>
       <p>{t.subtitle}</p>
     </section>

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { analyzeText, detectedScripts, type AnalyzedChar } from '../utils/analyzeText';
 import { messages } from '../i18n/messages';
+import { localizeCharacterName, localizeScript } from '../i18n/analyzer';
 import type { Locale } from '../i18n/config';
 
 type AnalyzerProps = {
@@ -72,36 +73,31 @@ function getExamples(locale: Locale): string[] {
   return localeExamples[locale] ?? commonExamples;
 }
 
-function getExampleLabel(example: string, locale: Locale): string {
+function getExampleLabel(example: string, zeroWidthSpace: string): string {
   if (example !== zeroWidthExample) return example;
-
-  if (locale === 'ko') return '보이지 않는 공백';
-  if (locale === 'ja') return '見えない空白';
-  if (locale === 'zh') return '不可见空格';
-
-  return 'zero-width space';
+  return zeroWidthSpace;
 }
 
-function buildShortExplanation(item: AnalyzedChar, looksLikeLabel: string): string {
-  const parts = [item.name, item.codePoint, item.script];
+type LooksLikeFormatter = (characters: string[]) => string;
+
+function buildShortExplanation(item: AnalyzedChar, locale: Locale, looksLike: LooksLikeFormatter): string {
+  const parts = [localizeCharacterName(item, locale), item.codePoint, localizeScript(item.script, locale)];
   if (item.lookalikes.length > 0) {
-    parts.push(`${looksLikeLabel} ${item.lookalikes.slice(0, 6).join(' ')}`);
+    parts.push(looksLike(item.lookalikes.slice(0, 6)));
   }
   return parts.join(' · ');
 }
 
-function CharacterTooltip({ item, looksLikeLabel }: { item: AnalyzedChar; looksLikeLabel: string }) {
+function CharacterTooltip({ item, locale, looksLike }: { item: AnalyzedChar; locale: Locale; looksLike: LooksLikeFormatter }) {
   return (
     <span className="char-tooltip" role="tooltip">
       <strong>{item.display}</strong>
-      <span>{item.name}</span>
+      <span>{localizeCharacterName(item, locale)}</span>
       <small>
-        {item.codePoint} · {item.script}
+        {item.codePoint} · {localizeScript(item.script, locale)}
       </small>
       {item.lookalikes.length > 0 && (
-        <em>
-          {looksLikeLabel} {item.lookalikes.slice(0, 6).join(' ')}
-        </em>
+        <em>{looksLike(item.lookalikes.slice(0, 6))}</em>
       )}
     </span>
   );
@@ -109,16 +105,18 @@ function CharacterTooltip({ item, looksLikeLabel }: { item: AnalyzedChar; looksL
 
 function HighlightedChar({
   item,
-  looksLikeLabel,
+  locale,
+  looksLike,
   onSelect,
   isSelected
 }: {
   item: AnalyzedChar;
-  looksLikeLabel: string;
+  locale: Locale;
+  looksLike: LooksLikeFormatter;
   onSelect: (item: AnalyzedChar) => void;
   isSelected: boolean;
 }) {
-  const shortExplanation = buildShortExplanation(item, looksLikeLabel);
+  const shortExplanation = buildShortExplanation(item, locale, looksLike);
   const charClass = [
     'result-char',
     item.isConfusable ? 'is-confusable' : '',
@@ -140,7 +138,7 @@ function HighlightedChar({
       >
         {item.isInvisible ? item.display : item.char === ' ' ? ' ' : item.char}
       </button>
-      <CharacterTooltip item={item} looksLikeLabel={looksLikeLabel} />
+      <CharacterTooltip item={item} locale={locale} looksLike={looksLike} />
     </span>
   );
 }
@@ -186,7 +184,7 @@ export default function Analyzer({ locale }: AnalyzerProps) {
         <div className="examples" aria-label={t.examplesLabel}>
           {examples.map((example) => (
             <button key={example} type="button" onClick={() => setInput(example)}>
-              {getExampleLabel(example, locale)}
+              {getExampleLabel(example, t.zeroWidthSpace)}
             </button>
           ))}
         </div>
@@ -202,7 +200,8 @@ export default function Analyzer({ locale }: AnalyzerProps) {
               <HighlightedChar
                 item={item}
                 key={`${item.index}-${item.codePoint}`}
-                looksLikeLabel={t.looksLike}
+                locale={locale}
+                looksLike={t.looksLike}
                 onSelect={(next) => setSelectedIndex(next.index)}
                 isSelected={selectedIndex === item.index}
               />
@@ -218,7 +217,7 @@ export default function Analyzer({ locale }: AnalyzerProps) {
               <span>{t.confusingFound(suspicious.length)}</span>
               {mixedScripts && (
                 <span>
-                  {t.mixedScripts}: {scripts.join(' + ')}
+                  {t.mixedScripts}: {scripts.map((script) => localizeScript(script, locale)).join(' + ')}
                 </span>
               )}
             </>
@@ -229,10 +228,10 @@ export default function Analyzer({ locale }: AnalyzerProps) {
           <div className="dictionary-note" aria-live="polite">
             <span className="dictionary-char">{selected.display}</span>
             <span className="dictionary-copy">
-              <strong>{selected.name}</strong>
+              <strong>{localizeCharacterName(selected, locale)}</strong>
               <small>
-                {selected.codePoint} · {selected.script}
-                {selected.lookalikes.length > 0 && ` · ${t.looksLike} ${selected.lookalikes.slice(0, 8).join(' ')}`}
+                {selected.codePoint} · {localizeScript(selected.script, locale)}
+                {selected.lookalikes.length > 0 && ` · ${t.looksLike(selected.lookalikes.slice(0, 8))}`}
               </small>
             </span>
           </div>
@@ -250,11 +249,11 @@ export default function Analyzer({ locale }: AnalyzerProps) {
                 <span className="detail-char">{item.display}</span>
                 <span className="detail-dash">—</span>
                 <span className="detail-main">
-                  {item.name} <span className="detail-code">{item.codePoint}</span>
+                  {localizeCharacterName(item, locale)} <span className="detail-code">{item.codePoint} · {localizeScript(item.script, locale)}</span>
                 </span>
                 {item.lookalikes.length > 0 && (
                   <span className="detail-lookalikes">
-                    {t.looksLike} {item.lookalikes.join(' ')}
+                    {t.looksLike(item.lookalikes)}
                   </span>
                 )}
               </li>

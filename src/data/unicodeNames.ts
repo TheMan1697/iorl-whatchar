@@ -1,7 +1,7 @@
 // Generated to match the expanded src/data/confusables.ts.
 // This map gives friendly names for curated lookalike groups.
 // Characters not listed here still fall back to inferUnicodeName() in analyzeText.ts.
-export const unicodeNames: Record<string, string> = {
+const unicodeNameEntries = {
   'I': 'Latin Capital Letter I',
   'l': 'Latin Small Letter L',
   '1': 'Digit One',
@@ -422,4 +422,7 @@ export const unicodeNames: Record<string, string> = {
   'ツ': 'Katakana letter Tsu',
   'ジ': 'Katakana letter Zi',
   'ヅ': 'Katakana letter Du',
-};
+} as const satisfies Record<string, string>;
+
+export type UnicodeNameCharacter = keyof typeof unicodeNameEntries;
+export const unicodeNames: Readonly<Record<string, string>> = unicodeNameEntries;
