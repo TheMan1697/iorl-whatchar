@@ -38,7 +38,7 @@ export type Messages = {
 export const messages: Record<Locale, Messages> = {
   en: {
     lang: 'en',
-    title: 'I vs l, O vs 0 & Unicode Character Checker | WhatChar',
+    title: 'I or l, O or 0 & Unicode Character Checker | WhatChar',
     description: 'Paste text to identify I, l, 1, O, 0, hidden Unicode characters and lookalikes. See each character’s exact code point; analysis stays in your browser.',
     hero: 'I, l, 1, O, 0 — find out what they are.',
     subtitle: 'Paste text to identify confusing Unicode characters.',
@@ -57,10 +57,10 @@ export const messages: Record<Locale, Messages> = {
     supports: 'Supports Greek, Cyrillic, Hangul, Japanese kana, CJK characters, fullwidth forms, punctuation variants, invisible spaces, and more.',
     footerPrivacy: 'All analysis runs in your browser.',
     seoTitle: 'I vs l, I vs 1, O vs 0, homoglyphs, and hidden spaces',
-    seoBody: 'WhatChar is a Unicode character checker for common text confusion: I vs l, I vs 1, l vs 1, O vs 0, Latin letters versus Greek or Cyrillic homoglyphs, Hangul lookalikes, Japanese kana and CJK lookalikes, fullwidth forms, dash and minus variants, and zero-width spaces. Use it to check if a character is uppercase I, lowercase l, digit 1, Latin O, digit 0, or a hidden zero-width space without sending text to a server.',
+    seoBody: 'WhatChar is a Unicode character checker for common text confusion: I or l, I vs 1, l vs 1, O or 0, Latin letters versus Greek or Cyrillic homoglyphs, Hangul lookalikes, Japanese kana and CJK lookalikes, fullwidth forms, dash and minus variants, and zero-width spaces. Use it to check if a character is uppercase I, lowercase l, digit 1, Latin O, digit 0, or a hidden zero-width space without sending text to a server.',
     seoCards: [
-      { title: 'I vs l vs 1 checker', body: 'Tell uppercase I, lowercase l, digit 1, Hangul ㅣ, vertical bars, Roman numerals, and fullwidth forms apart.' },
-      { title: 'O vs 0 checker', body: 'Compare Latin O, digit zero, Greek omicron, Cyrillic O, Hangul ㅇ, circles, and fullwidth round characters.' },
+      { title: 'I or l checker', body: 'Tell uppercase I, lowercase l, digit 1, Hangul ㅣ, vertical bars, Roman numerals, and fullwidth forms apart.' },
+      { title: 'O or 0 checker', body: 'Compare Latin O, digit zero, Greek omicron, Cyrillic O, Hangul ㅇ, circles, and fullwidth round characters.' },
       { title: 'Greek and Cyrillic homoglyphs', body: 'Find letters from other scripts that can look like Latin text, including Α, А, Ρ, Р, Χ, Х, Υ, and У.' },
       { title: 'Hangul, Japanese kana, and CJK lookalikes', body: 'Check similar shapes such as ㅣ, ㅇ, ㅡ, ロ, 口, カ, 力, ニ, 二, シ, ツ, ソ, and ン.' },
       { title: 'Dash and minus variants', body: 'Distinguish hyphen-minus, hyphen, non-breaking hyphen, en dash, em dash, and the mathematical minus sign.' },
