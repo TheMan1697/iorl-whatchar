@@ -1,0 +1,543 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import '../../../styles/global.css';
+import '../../../styles/csv-doctor.css';
+
+const title = 'CSV Doctor | 文字化け・Shift-JIS・取り込みエラーをチェック';
+const description = 'CSVをブラウザ内だけで解析。文字コード、列数のずれ、全角英数字、前後空白、重複ヘッダー、電話番号・郵便番号など、取り込みエラーの原因を無料で確認できます。';
+---
+
+<BaseLayout title={title} description={description} lang="ja" locale="ja" path="/ja/tools/csv-doctor/">
+  <header class="topbar">
+    <a class="brand" href="/ja/" aria-label="WhatChar home">WhatChar</a>
+    <a class="csv-top-link" href="/ja/">文字チェックに戻る</a>
+  </header>
+
+  <main class="csv-doctor-shell">
+    <section class="csv-doctor-hero">
+      <div class="csv-eyebrow">WHATCHAR LABS · BETA</div>
+      <h1>CSV Doctor</h1>
+      <p class="csv-lead">CSVが取り込めない理由を、アップロードせずにその場で確認。</p>
+      <div class="csv-trust-row" aria-label="Privacy and supported checks">
+        <span>✓ ブラウザ内処理</span>
+        <span>✓ サーバー送信なし</span>
+        <span>✓ UTF-8 / Shift-JIS 推定</span>
+      </div>
+    </section>
+
+    <section class="csv-tool-card" aria-labelledby="csv-tool-title">
+      <h2 id="csv-tool-title" class="sr-only">CSVファイルを解析</h2>
+
+      <input id="csv-file" class="sr-only" type="file" accept=".csv,text/csv,text/plain" />
+      <button id="csv-dropzone" class="csv-dropzone" type="button">
+        <span class="csv-drop-icon" aria-hidden="true">CSV</span>
+        <strong>CSVファイルをドロップ</strong>
+        <span>またはクリックして選択</span>
+        <small>最大 10 MB · ファイルは端末の外に送信されません</small>
+      </button>
+
+      <div id="csv-file-row" class="csv-file-row" hidden>
+        <div>
+          <span class="csv-file-label">選択中</span>
+          <strong id="csv-file-name"></strong>
+        </div>
+        <button id="csv-reset" class="csv-text-button" type="button">別のファイル</button>
+      </div>
+
+      <p id="csv-status" class="csv-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="csv-results" class="csv-results" hidden>
+      <div class="csv-result-header">
+        <div>
+          <span class="csv-section-kicker">診断結果</span>
+          <h2 id="csv-result-title">解析完了</h2>
+        </div>
+        <button id="csv-download" class="csv-primary-button" type="button">修正版をUTF-8で保存</button>
+      </div>
+
+      <div class="csv-meta-grid" aria-label="CSV information">
+        <div><span>文字コード</span><strong id="csv-meta-encoding">—</strong></div>
+        <div><span>区切り文字</span><strong id="csv-meta-delimiter">—</strong></div>
+        <div><span>データ行</span><strong id="csv-meta-rows">—</strong></div>
+        <div><span>列数</span><strong id="csv-meta-columns">—</strong></div>
+      </div>
+
+      <div class="csv-summary-bar">
+        <div class="csv-summary-item csv-summary-error"><strong id="csv-count-error">0</strong><span>エラー</span></div>
+        <div class="csv-summary-item csv-summary-warning"><strong id="csv-count-warning">0</strong><span>要確認</span></div>
+        <div class="csv-summary-item csv-summary-info"><strong id="csv-count-info">0</strong><span>情報</span></div>
+      </div>
+
+      <section class="csv-diagnostic-block" aria-labelledby="csv-issues-heading">
+        <div class="csv-block-heading">
+          <h3 id="csv-issues-heading">見つかった項目</h3>
+          <span id="csv-issue-caption"></span>
+        </div>
+        <div id="csv-issue-list" class="csv-issue-list"></div>
+      </section>
+
+      <section class="csv-diagnostic-block" aria-labelledby="csv-preview-heading">
+        <div class="csv-block-heading">
+          <h3 id="csv-preview-heading">プレビュー</h3>
+          <span>先頭 8 行</span>
+        </div>
+        <div id="csv-preview" class="csv-preview-wrap"></div>
+      </section>
+    </section>
+
+    <section class="csv-seo-copy">
+      <h2>CSVの「なぜ取り込めない？」を先に見つける</h2>
+      <p>日本の業務システムでは、UTF-8とShift-JISの違い、全角英数字、列数のずれ、Excelによる値の変換など、見た目では分かりにくい原因でCSVの取り込みに失敗することがあります。CSV Doctorはファイルをブラウザ内で読み取り、よくある問題をまとめて確認します。</p>
+
+      <div class="csv-info-grid">
+        <article>
+          <h3>文字コード</h3>
+          <p>UTF-8 / UTF-8 BOM / Shift-JIS・CP932を推定し、文字化けの兆候を確認します。</p>
+        </article>
+        <article>
+          <h3>列・ヘッダー</h3>
+          <p>列数が揃っていない行、重複ヘッダー、空のヘッダーなどを検出します。</p>
+        </article>
+        <article>
+          <h3>日本語データ</h3>
+          <p>全角英数字や全角スペース、電話番号・郵便番号の形式などを確認します。</p>
+        </article>
+        <article>
+          <h3>ローカル処理</h3>
+          <p>解析はこのブラウザ内で完結します。CSVファイル自体をサーバーへ送信しません。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <nav class="footer-links" aria-label="Site links">
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </footer>
+
+  <script>
+    type Severity = 'error' | 'warning' | 'info';
+    type Issue = {
+      severity: Severity;
+      title: string;
+      detail: string;
+      row?: number;
+      column?: string;
+      before?: string;
+      after?: string;
+    };
+
+    const MAX_BYTES = 10 * 1024 * 1024;
+    const fileInput = document.querySelector<HTMLInputElement>('#csv-file')!;
+    const dropzone = document.querySelector<HTMLButtonElement>('#csv-dropzone')!;
+    const fileRow = document.querySelector<HTMLElement>('#csv-file-row')!;
+    const fileName = document.querySelector<HTMLElement>('#csv-file-name')!;
+    const resetButton = document.querySelector<HTMLButtonElement>('#csv-reset')!;
+    const status = document.querySelector<HTMLElement>('#csv-status')!;
+    const results = document.querySelector<HTMLElement>('#csv-results')!;
+    const downloadButton = document.querySelector<HTMLButtonElement>('#csv-download')!;
+    const issueList = document.querySelector<HTMLElement>('#csv-issue-list')!;
+    const issueCaption = document.querySelector<HTMLElement>('#csv-issue-caption')!;
+    const preview = document.querySelector<HTMLElement>('#csv-preview')!;
+
+    let currentRows: string[][] = [];
+    let currentDelimiter = ',';
+    let currentBaseName = 'fixed';
+
+    const getEl = (id: string) => document.getElementById(id)!;
+
+    function normalizeAscii(value: string) {
+      return value
+        .replace(/\u3000/g, ' ')
+        .replace(/[！-～]/g, (char) => String.fromCharCode(char.charCodeAt(0) - 0xfee0))
+        .trim();
+    }
+
+    function isValidUtf8(bytes: Uint8Array) {
+      try {
+        new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function decodeBytes(bytes: Uint8Array) {
+      if (bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) {
+        return { text: new TextDecoder('utf-8').decode(bytes.subarray(3)), encoding: 'UTF-8 BOM' };
+      }
+      if (bytes[0] === 0xff && bytes[1] === 0xfe) {
+        return { text: new TextDecoder('utf-16le').decode(bytes.subarray(2)), encoding: 'UTF-16 LE' };
+      }
+      if (bytes[0] === 0xfe && bytes[1] === 0xff) {
+        return { text: new TextDecoder('utf-16be').decode(bytes.subarray(2)), encoding: 'UTF-16 BE' };
+      }
+      if (isValidUtf8(bytes)) {
+        return { text: new TextDecoder('utf-8').decode(bytes), encoding: 'UTF-8' };
+      }
+
+      try {
+        return { text: new TextDecoder('shift_jis').decode(bytes), encoding: 'Shift-JIS / CP932（推定）' };
+      } catch {
+        return { text: new TextDecoder('utf-8').decode(bytes), encoding: '不明' };
+      }
+    }
+
+    function parseCsv(text: string, delimiter: string) {
+      const rows: string[][] = [];
+      let row: string[] = [];
+      let field = '';
+      let quoted = false;
+
+      for (let i = 0; i < text.length; i += 1) {
+        const char = text[i];
+
+        if (char === '"') {
+          if (quoted && text[i + 1] === '"') {
+            field += '"';
+            i += 1;
+          } else {
+            quoted = !quoted;
+          }
+          continue;
+        }
+
+        if (!quoted && char === delimiter) {
+          row.push(field);
+          field = '';
+          continue;
+        }
+
+        if (!quoted && (char === '\n' || char === '\r')) {
+          if (char === '\r' && text[i + 1] === '\n') i += 1;
+          row.push(field);
+          rows.push(row);
+          row = [];
+          field = '';
+          continue;
+        }
+
+        field += char;
+      }
+
+      if (field.length > 0 || row.length > 0) {
+        row.push(field);
+        rows.push(row);
+      }
+
+      while (rows.length && rows[rows.length - 1].every((cell) => cell === '')) rows.pop();
+      return rows;
+    }
+
+    function delimiterScore(rows: string[][]) {
+      const sample = rows.slice(0, 30).filter((row) => row.some((cell) => cell !== ''));
+      if (!sample.length) return -Infinity;
+      const counts = sample.map((row) => row.length);
+      const frequencies = new Map<number, number>();
+      counts.forEach((count) => frequencies.set(count, (frequencies.get(count) ?? 0) + 1));
+      const [mode, frequency] = [...frequencies.entries()].sort((a, b) => b[1] - a[1])[0];
+      if (mode <= 1) return frequency - 100;
+      return mode * 8 + frequency * 5 - (sample.length - frequency) * 4;
+    }
+
+    function detectDelimiter(text: string) {
+      const candidates = [',', '\t', ';'];
+      return candidates
+        .map((delimiter) => ({ delimiter, rows: parseCsv(text, delimiter) }))
+        .sort((a, b) => delimiterScore(b.rows) - delimiterScore(a.rows))[0];
+    }
+
+    function analyze(rows: string[][], encoding: string) {
+      const issues: Issue[] = [];
+      if (!rows.length) return issues;
+
+      const headers = rows[0];
+      const normalizedHeaders = headers.map((header) => normalizeAscii(header));
+      const seen = new Map<string, number>();
+
+      normalizedHeaders.forEach((header, index) => {
+        if (!header) {
+          issues.push({ severity: 'error', title: '空のヘッダーがあります', detail: `${index + 1}列目のヘッダーが空です。`, column: `${index + 1}列目` });
+          return;
+        }
+        if (seen.has(header)) {
+          issues.push({ severity: 'error', title: '同じヘッダー名が重複しています', detail: `「${header}」が複数あります。取り込み先によっては列を区別できません。`, column: header });
+        } else {
+          seen.set(header, index);
+        }
+      });
+
+      if (encoding === 'UTF-16 LE' || encoding === 'UTF-16 BE') {
+        issues.push({ severity: 'warning', title: 'UTF-16のCSVです', detail: '業務システムによってはUTF-8またはShift-JISへの変換が必要です。' });
+      }
+
+      rows.slice(1).forEach((row, rowIndex) => {
+        const displayRow = rowIndex + 2;
+        if (row.length !== headers.length) {
+          issues.push({ severity: 'error', title: '列数が揃っていません', detail: `ヘッダーは${headers.length}列ですが、この行は${row.length}列です。引用符や区切り文字を確認してください。`, row: displayRow });
+        }
+
+        row.forEach((cell, columnIndex) => {
+          const header = normalizedHeaders[columnIndex] || `${columnIndex + 1}列目`;
+          const normalized = normalizeAscii(cell);
+
+          if (cell.includes('\u0000')) {
+            issues.push({ severity: 'error', title: 'NULL文字が含まれています', detail: '見えない制御文字が取り込みエラーの原因になることがあります。', row: displayRow, column: header });
+          }
+
+          if (cell !== cell.trim()) {
+            issues.push({ severity: 'warning', title: '値の前後に空白があります', detail: '照合やコード一致に失敗する可能性があります。修正版では前後空白を削除します。', row: displayRow, column: header, before: cell, after: normalized });
+          }
+
+          if (/[！-～　]/.test(cell)) {
+            issues.push({ severity: 'warning', title: '全角の英数字・記号があります', detail: '半角指定の項目では取り込みに失敗することがあります。修正版では半角へ変換します。', row: displayRow, column: header, before: cell, after: normalized });
+          }
+
+          if (/^\d+(?:\.\d+)?E[+-]?\d+$/i.test(cell.trim())) {
+            issues.push({ severity: 'error', title: '指数表記に変換された値があります', detail: 'Excelなどで長い番号が自動変換された可能性があります。元データを確認してください。', row: displayRow, column: header, before: cell });
+          }
+
+          if (/[\u{10000}-\u{10FFFF}]/u.test(cell)) {
+            issues.push({ severity: 'warning', title: 'Shift-JISで扱えない可能性がある文字があります', detail: '絵文字や補助平面の文字はShift-JIS/CP932の取り込み先で失敗する可能性があります。', row: displayRow, column: header, before: cell });
+          }
+
+          if (/郵便|zip|postal/i.test(header) && normalized) {
+            const digits = normalized.replace(/[^0-9]/g, '');
+            if (!/^\d{7}$/.test(digits)) {
+              issues.push({ severity: 'warning', title: '郵便番号の形式を確認してください', detail: '日本の郵便番号は通常7桁です。', row: displayRow, column: header, before: cell });
+            }
+          }
+
+          if (/電話|tel|phone/i.test(header) && normalized) {
+            const digits = normalized.replace(/[^0-9]/g, '');
+            if (digits && !/^0\d{9,10}$/.test(digits)) {
+              issues.push({ severity: 'warning', title: '電話番号の桁数を確認してください', detail: '国内電話番号として一般的な10〜11桁の形式から外れています。', row: displayRow, column: header, before: cell });
+            }
+          }
+        });
+      });
+
+      const codeLikeHeaders = normalizedHeaders.filter((header) => /郵便|電話|番号|コード|code|(^|_)id($|_)/i.test(header));
+      if (codeLikeHeaders.length) {
+        issues.push({ severity: 'info', title: 'Excelで開くと先頭の0が消える場合があります', detail: `「${codeLikeHeaders.slice(0, 3).join('」「')}」などの列は文字列として扱うのが安全です。` });
+      }
+
+      return issues;
+    }
+
+    function serializeCsv(rows: string[][], delimiter: string) {
+      const escape = (value: string) => {
+        const normalized = normalizeAscii(value);
+        if (normalized.includes('"') || normalized.includes('\n') || normalized.includes('\r') || normalized.includes(delimiter)) {
+          return `"${normalized.replace(/"/g, '""')}"`;
+        }
+        return normalized;
+      };
+      return rows.map((row) => row.map(escape).join(delimiter)).join('\r\n');
+    }
+
+    function delimiterLabel(delimiter: string) {
+      if (delimiter === '\t') return 'タブ (TSV)';
+      if (delimiter === ';') return 'セミコロン';
+      return 'カンマ';
+    }
+
+    function addIssueCard(issue: Issue) {
+      const card = document.createElement('article');
+      card.className = `csv-issue csv-issue-${issue.severity}`;
+
+      const marker = document.createElement('span');
+      marker.className = 'csv-issue-marker';
+      marker.textContent = issue.severity === 'error' ? '!' : issue.severity === 'warning' ? '△' : 'i';
+
+      const body = document.createElement('div');
+      const heading = document.createElement('div');
+      heading.className = 'csv-issue-heading';
+      const title = document.createElement('strong');
+      title.textContent = issue.title;
+      heading.appendChild(title);
+
+      if (issue.row || issue.column) {
+        const location = document.createElement('span');
+        location.textContent = [issue.row ? `${issue.row}行目` : '', issue.column ?? ''].filter(Boolean).join(' · ');
+        heading.appendChild(location);
+      }
+
+      const detail = document.createElement('p');
+      detail.textContent = issue.detail;
+      body.append(heading, detail);
+
+      if (issue.before !== undefined || issue.after !== undefined) {
+        const values = document.createElement('div');
+        values.className = 'csv-issue-values';
+        if (issue.before !== undefined) {
+          const before = document.createElement('code');
+          before.textContent = issue.before;
+          values.appendChild(before);
+        }
+        if (issue.after !== undefined && issue.after !== issue.before) {
+          const arrow = document.createElement('span');
+          arrow.textContent = '→';
+          const after = document.createElement('code');
+          after.textContent = issue.after;
+          values.append(arrow, after);
+        }
+        body.appendChild(values);
+      }
+
+      card.append(marker, body);
+      issueList.appendChild(card);
+    }
+
+    function renderPreview(rows: string[][]) {
+      preview.textContent = '';
+      if (!rows.length) return;
+
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      rows[0].forEach((cell) => {
+        const th = document.createElement('th');
+        th.textContent = cell || '（空）';
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      rows.slice(1, 9).forEach((row) => {
+        const tr = document.createElement('tr');
+        const width = Math.max(rows[0].length, row.length);
+        for (let i = 0; i < width; i += 1) {
+          const td = document.createElement('td');
+          td.textContent = row[i] ?? '';
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      preview.appendChild(table);
+    }
+
+    function renderResult(rows: string[][], encoding: string, delimiter: string, issues: Issue[]) {
+      currentRows = rows;
+      currentDelimiter = delimiter;
+      results.hidden = false;
+
+      getEl('csv-meta-encoding').textContent = encoding;
+      getEl('csv-meta-delimiter').textContent = delimiterLabel(delimiter);
+      getEl('csv-meta-rows').textContent = Math.max(0, rows.length - 1).toLocaleString('ja-JP');
+      getEl('csv-meta-columns').textContent = String(rows[0]?.length ?? 0);
+
+      const counts = { error: 0, warning: 0, info: 0 };
+      issues.forEach((issue) => { counts[issue.severity] += 1; });
+      getEl('csv-count-error').textContent = String(counts.error);
+      getEl('csv-count-warning').textContent = String(counts.warning);
+      getEl('csv-count-info').textContent = String(counts.info);
+
+      issueList.textContent = '';
+      if (issues.length) {
+        issues.slice(0, 80).forEach(addIssueCard);
+        issueCaption.textContent = issues.length > 80 ? `${issues.length}件中 80件を表示` : `${issues.length}件`;
+      } else {
+        const ok = document.createElement('div');
+        ok.className = 'csv-all-clear';
+        const strong = document.createElement('strong');
+        strong.textContent = '大きな問題は見つかりませんでした';
+        const p = document.createElement('p');
+        p.textContent = '基本的な構造・文字チェックでは問題を検出しませんでした。取り込み先固有の仕様は別途確認してください。';
+        ok.append(strong, p);
+        issueList.appendChild(ok);
+        issueCaption.textContent = '0件';
+      }
+
+      getEl('csv-result-title').textContent = counts.error ? '修正が必要な項目があります' : counts.warning ? '確認したい項目があります' : '基本チェックOK';
+      renderPreview(rows);
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    async function handleFile(file: File) {
+      if (!file) return;
+      if (file.size > MAX_BYTES) {
+        status.textContent = '10 MBを超えるファイルは現在解析できません。';
+        return;
+      }
+
+      currentBaseName = file.name.replace(/\.[^.]+$/, '') || 'fixed';
+      dropzone.hidden = true;
+      fileRow.hidden = false;
+      fileName.textContent = `${file.name} · ${(file.size / 1024).toLocaleString('ja-JP', { maximumFractionDigits: 1 })} KB`;
+      status.textContent = '解析しています…';
+      results.hidden = true;
+
+      try {
+        const bytes = new Uint8Array(await file.arrayBuffer());
+        const decoded = decodeBytes(bytes);
+        const detected = detectDelimiter(decoded.text);
+        const issues = analyze(detected.rows, decoded.encoding);
+        status.textContent = '解析はブラウザ内で完了しました。ファイルは送信されていません。';
+        renderResult(detected.rows, decoded.encoding, detected.delimiter, issues);
+      } catch (error) {
+        console.error(error);
+        status.textContent = '解析できませんでした。CSV形式かどうかを確認してください。';
+        results.hidden = true;
+      }
+    }
+
+    function reset() {
+      fileInput.value = '';
+      currentRows = [];
+      dropzone.hidden = false;
+      fileRow.hidden = true;
+      results.hidden = true;
+      status.textContent = '';
+      issueList.textContent = '';
+      preview.textContent = '';
+    }
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files?.[0];
+      if (file) void handleFile(file);
+    });
+
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      document.addEventListener(eventName, (event) => event.preventDefault());
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.add('is-dragging');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove('is-dragging');
+      });
+    });
+
+    dropzone.addEventListener('drop', (event) => {
+      const file = event.dataTransfer?.files?.[0];
+      if (file) void handleFile(file);
+    });
+
+    resetButton.addEventListener('click', reset);
+    downloadButton.addEventListener('click', () => {
+      if (!currentRows.length) return;
+      const csv = `\uFEFF${serializeCsv(currentRows, currentDelimiter)}`;
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${currentBaseName}-fixed-utf8.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</BaseLayout>
