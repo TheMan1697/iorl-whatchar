@@ -33,6 +33,17 @@ export type Messages = {
   faqTitle: string;
   faqs: Array<{ q: string; a: string }>;
   privacyNote: string;
+  /** WhatChar is a Kakerio tool: header link and the related-tools section (links follow kakerioPaths). */
+  kakerio: {
+    byAria: string;
+    title: string;
+    lead: string;
+    tools: Array<{ slug: 'text-normalizer' | 'mojibake-fixer' | 'csv-doctor'; name: string; body: string }>;
+    all: string;
+    newTab: string;
+    /** Shown where Kakerio has no page in this language (es, fr): the links open English pages. */
+    languageNote: string;
+  };
 };
 
 export const messages: Record<Locale, Messages> = {
@@ -95,7 +106,20 @@ export const messages: Record<Locale, Messages> = {
       { q: 'Is pasted text sent to a server?', a: 'No. All text analysis runs locally inside your browser javascript engine. Your input is never sent to an external server.' },
       { q: 'Can this detect invisible characters?', a: 'Yes. It identifies zero-width spaces (ZWSP), non-breaking spaces (NBSP), word joiners, and other hidden Unicode characters.' }
     ],
-    privacyNote: 'Your text is analyzed locally in your browser.'
+    privacyNote: 'Your text is analyzed locally in your browser.',
+    kakerio: {
+      byAria: 'by Kakerio: WhatChar is a Kakerio tool (opens kakerio.com in a new tab)',
+      title: 'More tools from Kakerio',
+      lead: 'WhatChar is one of Kakerio’s small browser tools. These Kakerio tools also run in your browser, with no upload:',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: 'Normalize full-width and half-width characters, half-width kana and spaces in Japanese text, choosing each change yourself.' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: 'Undo garbled text such as 「縺ゅ」 or 「ã‚」 by exactly reversing the encoding mix-up, and see which characters cannot be recovered.' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: 'Check a CSV file for encoding problems, shifted columns and full-width characters before you import it.' }
+      ],
+      all: 'All Kakerio tools',
+      newTab: '(opens kakerio.com in a new tab)',
+      languageNote: ''
+    }
   },
   ko: {
     lang: 'ko',
@@ -156,7 +180,20 @@ export const messages: Record<Locale, Messages> = {
       { q: '입력한 텍스트가 서버로 전송되나요?', a: '아니오. 모든 분석은 사용자 브라우저 내부에서 자바스크립트로 실행되며, 입력한 텍스트가 외부 서버로 전송되지 않습니다.' },
       { q: '보이지 않는 문자도 찾을 수 있나요?', a: '네. 제로폭 공백(ZWSP), 줄바꿈 없는 공백(NBSP), 단어 결합자(WJ) 등 보이지 않는 특수 문자를 정확히 감지해 표시합니다.' }
     ],
-    privacyNote: '입력한 텍스트는 브라우저 내에서만 분석됩니다.'
+    privacyNote: '입력한 텍스트는 브라우저 내에서만 분석됩니다.',
+    kakerio: {
+      byAria: 'by Kakerio: WhatChar는 Kakerio의 도구입니다 (새 탭에서 kakerio.com 열기)',
+      title: 'Kakerio의 다른 도구',
+      lead: 'WhatChar는 브라우저에서 쓰는 Kakerio의 작은 도구 중 하나입니다. 아래 Kakerio 도구도 업로드 없이 브라우저에서 동작합니다.',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: '일본어 텍스트의 전각·반각 문자, 반각 가나, 공백을 바꿀 항목을 직접 골라 정리합니다.' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: '「縺ゅ」나 「ã‚」 같은 깨진 글자를 인코딩 혼동을 정확히 역변환해 되돌리고, 되돌릴 수 없는 글자는 따로 보여 줍니다.' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: '가져오기 전에 CSV 파일의 문자 깨짐, 열 밀림, 전각 문자를 검사합니다.' }
+      ],
+      all: 'Kakerio 도구 모두 보기',
+      newTab: '(새 탭에서 kakerio.com 열기)',
+      languageNote: ''
+    }
   },
   ja: {
     lang: 'ja',
@@ -217,7 +254,20 @@ export const messages: Record<Locale, Messages> = {
       { q: '入力したテキストはサーバーに送信されますか？', a: 'いいえ。すべての解析はブラウザ内でローカル処理され、外部サーバーへ送信されません。' },
       { q: '不可視文字も検出できますか？', a: 'はい。ゼロ幅スペース（ZWSP）やノーブレークスペースなどの隠れた文字を検出します。' }
     ],
-    privacyNote: '入力したテキストはブラウザ内だけで解析されます。'
+    privacyNote: '入力したテキストはブラウザ内だけで解析されます。',
+    kakerio: {
+      byAria: 'by Kakerio：WhatChar は Kakerio のツールです（kakerio.com を新しいタブで開きます）',
+      title: 'Kakerio のほかのツール',
+      lead: 'WhatChar は、ブラウザで使える Kakerio の小さなツールのひとつです。次の Kakerio のツールも、アップロードなしでブラウザ内で動きます。',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: '日本語テキストの全角・半角、半角カナ、空白を、変える項目を自分で選んで整えます。' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: '「縺ゅ」「ã‚」のような文字化けを、文字コードの取り違えを正確に逆変換して戻します。戻せない文字はそのまま示します。' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: '取り込む前に、CSV ファイルの文字化け・列ずれ・全角文字をチェックします。' }
+      ],
+      all: 'Kakerio のツール一覧',
+      newTab: '（kakerio.com を新しいタブで開きます）',
+      languageNote: ''
+    }
   },
   zh: {
     lang: 'zh',
@@ -278,7 +328,20 @@ export const messages: Record<Locale, Messages> = {
       { q: '输入的文本会被发送到服务器吗？', a: '不会。所有解析均在浏览器本地 JavaScript 引擎中完成，不上传服务器。' },
       { q: '能检测到不可见字符吗？', a: '可以。能精准识别零宽空格 (ZWSP)、不换行空格 (NBSP) 等隐藏字符。' }
     ],
-    privacyNote: '您输入的文本仅在浏览器本地进行分析。'
+    privacyNote: '您输入的文本仅在浏览器本地进行分析。',
+    kakerio: {
+      byAria: 'by Kakerio：WhatChar 是 Kakerio 的工具（在新标签页中打开 kakerio.com）',
+      title: 'Kakerio 的其他工具',
+      lead: 'WhatChar 是 Kakerio 在浏览器中使用的小工具之一。下面这些 Kakerio 工具同样在浏览器中运行，无需上传。',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: '整理日文文本中的全角/半角字符、半角假名和空格，每项转换由你决定。' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: '撤销「縺ゅ」或「ã‚」这类乱码：精确逆转编码混用，无法恢复的字符会如实标出。' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: '在导入前检查 CSV 文件的乱码、列错位和全角字符。' }
+      ],
+      all: '查看全部 Kakerio 工具',
+      newTab: '（在新标签页中打开 kakerio.com）',
+      languageNote: ''
+    }
   },
   es: {
     lang: 'es',
@@ -339,7 +402,20 @@ export const messages: Record<Locale, Messages> = {
       { q: '¿Se envía el texto a un servidor?', a: 'No. Todo el análisis se realiza localmente en tu navegador.' },
       { q: '¿Puede detectar caracteres invisibles?', a: 'Sí. Identifica espacios de ancho cero (ZWSP), espacios sin separación (NBSP) y otros caracteres ocultos.' }
     ],
-    privacyNote: 'El texto que introduces se analiza únicamente en tu navegador.'
+    privacyNote: 'El texto que introduces se analiza únicamente en tu navegador.',
+    kakerio: {
+      byAria: 'by Kakerio: WhatChar es una herramienta de Kakerio (abre kakerio.com en una pestaña nueva)',
+      title: 'Más herramientas de Kakerio',
+      lead: 'WhatChar es una de las pequeñas herramientas de Kakerio para el navegador. Estas herramientas de Kakerio también funcionan en tu navegador, sin subir nada:',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: 'Normaliza caracteres de ancho completo y medio, kana de ancho medio y espacios en textos japoneses, eligiendo tú cada cambio.' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: 'Deshace texto corrupto como 「縺ゅ」 o 「ã‚」 invirtiendo con exactitud la confusión de codificación, y muestra qué caracteres no se pueden recuperar.' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: 'Revisa un archivo CSV antes de importarlo: problemas de codificación, columnas desplazadas y caracteres de ancho completo.' }
+      ],
+      all: 'Todas las herramientas de Kakerio',
+      newTab: '(abre kakerio.com en una pestaña nueva)',
+      languageNote: 'Kakerio todavía no está disponible en español: estos enlaces abren su versión en inglés.'
+    }
   },
   fr: {
     lang: 'fr',
@@ -400,7 +476,20 @@ export const messages: Record<Locale, Messages> = {
       { q: 'Le texte est-il envoyé à un serveur ?', a: 'Non. Tout l’analyse s’exécute localement dans votre navigateur.' },
       { q: 'Peut-il détecter les caractères invisibles ?', a: 'Oui. Il détecte les espaces de largeur nulle (ZWSP), incassables (NBSP) et autres caractères masqués.' }
     ],
-    privacyNote: 'Le texte saisi est analysé uniquement dans votre navigateur.'
+    privacyNote: 'Le texte saisi est analysé uniquement dans votre navigateur.',
+    kakerio: {
+      byAria: 'by Kakerio : WhatChar est un outil Kakerio (ouvre kakerio.com dans un nouvel onglet)',
+      title: 'Autres outils Kakerio',
+      lead: 'WhatChar fait partie des petits outils Kakerio pour le navigateur. Ces outils Kakerio fonctionnent eux aussi dans votre navigateur, sans aucun envoi :',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: 'Normalise les caractères pleine et demi-chasse, les kana demi-chasse et les espaces d’un texte japonais, en choisissant chaque modification.' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: 'Annule un texte corrompu comme 「縺ゅ」 ou 「ã‚」 en inversant exactement la confusion d’encodage, et signale les caractères impossibles à récupérer.' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: 'Vérifie un fichier CSV avant import : problèmes d’encodage, colonnes décalées et caractères pleine chasse.' }
+      ],
+      all: 'Tous les outils Kakerio',
+      newTab: '(ouvre kakerio.com dans un nouvel onglet)',
+      languageNote: 'Kakerio n’est pas encore disponible en français : ces liens ouvrent sa version anglaise.'
+    }
   },
   de: {
     lang: 'de',
@@ -461,6 +550,19 @@ export const messages: Record<Locale, Messages> = {
       { q: 'Wird der eingegebene Text an einen Server gesendet?', a: 'Nein. Die gesamte Analyse läuft lokal in Ihrem Browser.' },
       { q: 'Können unsichtbare Zeichen erkannt werden?', a: 'Ja. Es erkennt breitenlose Leerzeichen (ZWSP), geschützte Leerzeichen (NBSP) und andere versteckte Zeichen.' }
     ],
-    privacyNote: 'Der eingegebene Text wird ausschließlich lokal in Ihrem Browser analysiert.'
+    privacyNote: 'Der eingegebene Text wird ausschließlich lokal in Ihrem Browser analysiert.',
+    kakerio: {
+      byAria: 'by Kakerio: WhatChar ist ein Tool von Kakerio (öffnet kakerio.com in einem neuen Tab)',
+      title: 'Weitere Tools von Kakerio',
+      lead: 'WhatChar ist eines der kleinen Browser-Tools von Kakerio. Auch diese Kakerio-Tools laufen in Ihrem Browser, ohne Upload:',
+      tools: [
+        { slug: 'text-normalizer', name: 'Japanese Text Normalizer', body: 'Normalisiert Voll- und Halbbreitenzeichen, Halbbreiten-Kana und Leerzeichen in japanischem Text – jede Änderung wählen Sie selbst.' },
+        { slug: 'mojibake-fixer', name: 'Mojibake Fixer', body: 'Macht Zeichensalat wie 「縺ゅ」 oder 「ã‚」 rückgängig, indem die Kodierungsverwechslung exakt umgekehrt wird, und zeigt, welche Zeichen nicht wiederherstellbar sind.' },
+        { slug: 'csv-doctor', name: 'CSV Doctor', body: 'Prüft eine CSV-Datei vor dem Import auf Kodierungsprobleme, verschobene Spalten und Vollbreitenzeichen.' }
+      ],
+      all: 'Alle Kakerio-Tools',
+      newTab: '(öffnet kakerio.com in einem neuen Tab)',
+      languageNote: ''
+    }
   }
 };

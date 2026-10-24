@@ -6,6 +6,10 @@ Iorl - WhatChar is a lightweight web tool for identifying confusing Unicode char
 
 It helps distinguish visually similar characters such as `I`, `l`, `1`, `O`, `0`, Greek and Cyrillic homoglyphs, Hangul lookalikes, Japanese/CJK lookalikes, dash and minus variants, and zero-width spaces.
 
+## Part of Kakerio
+
+WhatChar is a tool by [Kakerio](https://kakerio.com/en/), a family of small browser tools for text and CSV files. It keeps its own domain, isitiorl.com, and its own pages and SEO. The header's "by Kakerio" link and the "More tools from Kakerio" section open kakerio.com in the page's language (Japanese, Korean, English, Simplified Chinese, German; Spanish and French open the English pages), recommending Japanese Text Normalizer, Mojibake Fixer and CSV Doctor.
+
 ## Features
 
 * Detects Unicode lookalike and homoglyph characters
