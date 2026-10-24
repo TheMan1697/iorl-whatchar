@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Analyzer from '../components/Analyzer';
+import Brand from '../components/Brand.astro';
 import { messages } from '../i18n/messages';
-import { localePaths, locales, type Locale } from '../i18n/config';
+import { kakerioUrl, localePaths, locales, type Locale } from '../i18n/config';
 import '../styles/global.css';
 
 const { locale = 'en' } = Astro.props as { locale?: Locale };
@@ -13,7 +14,7 @@ const heroParts = t.hero.split(/(?<![\p{L}\p{N}])([Il1O0])(?![\p{L}\p{N}])/gu);
 
 <BaseLayout title={t.title} description={t.description} lang={t.lang} locale={locale}>
   <header class="topbar">
-    <a class="brand" href={localePaths[locale]} aria-label="WhatChar home">WhatChar</a>
+    <Brand locale={locale} home={localePaths[locale]} />
     <nav class="language" aria-label="Language">
       {locales.map((code, index) => (
         <>
@@ -104,6 +105,25 @@ const heroParts = t.hero.split(/(?<![\p{L}\p{N}])([Il1O0])(?![\p{L}\p{N}])/gu);
           </div>
         ))}
       </div>
+    </section>
+
+    <section class="seo-copy kakerio-section" aria-labelledby="kakerio-tools">
+      <h2 id="kakerio-tools">{t.kakerio.title}</h2>
+      <p>{t.kakerio.lead}</p>
+      <ul class="kakerio-tools">
+        {t.kakerio.tools.map((tool) => (
+          <li>
+            <a href={kakerioUrl(locale, `tools/${tool.slug}/`)} target="_blank" rel="noopener">
+              <strong>{tool.name}</strong>
+              <span>{tool.body}</span>
+              <small aria-hidden="true">kakerio.com ↗</small>
+              <span class="sr-only">{t.kakerio.newTab}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      {t.kakerio.languageNote && <p class="kakerio-note">{t.kakerio.languageNote}</p>}
+      <a class="kakerio-all" href={kakerioUrl(locale)} target="_blank" rel="noopener">{t.kakerio.all} <span aria-hidden="true">↗</span><span class="sr-only">{t.kakerio.newTab}</span></a>
     </section>
 
     <section class="seo-copy faq-section">

@@ -1,0 +1,15 @@
+---
+/**
+ * Header brand: WhatChar keeps its name; the small "by Kakerio" link says whose tool it is
+ * and opens kakerio.com in the page's language (kakerioPaths). Shared by every page header.
+ */
+import { kakerioUrl, type Locale } from '../i18n/config';
+import { messages } from '../i18n/messages';
+
+const { locale = 'en', home = '/' } = Astro.props as { locale?: Locale; home?: string };
+const t = messages[locale].kakerio;
+---
+<div class="brand-group">
+  <a class="brand" href={home} aria-label="WhatChar home">WhatChar</a>
+  <a class="brand-by" href={kakerioUrl(locale)} target="_blank" rel="noopener" aria-label={t.byAria}>by Kakerio</a>
+</div>

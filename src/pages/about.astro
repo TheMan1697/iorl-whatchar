@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Brand from '../components/Brand.astro';
 import '../styles/global.css';
 
 const title = 'About | WhatChar';
@@ -8,7 +9,7 @@ const description = 'Learn what WhatChar does and why confusing Unicode characte
 
 <BaseLayout title={title} description={description} lang="en" locale="en" path="/about/">
   <header class="topbar">
-    <a class="brand" href="/" aria-label="WhatChar home">WhatChar</a>
+    <Brand />
   </header>
 
   <main class="page-shell">
@@ -30,6 +31,24 @@ const description = 'Learn what WhatChar does and why confusing Unicode characte
 
       <p>
         All analysis runs locally in your browser. The text you paste is not sent to a server.
+      </p>
+
+      <h2>Part of Kakerio</h2>
+
+      <p>
+        WhatChar is a tool by <a href="https://kakerio.com/en/" target="_blank" rel="noopener">Kakerio</a>,
+        a family of small browser tools for text and CSV files. It keeps its own address,
+        isitiorl.com, and works exactly as before.
+      </p>
+
+      <p>
+        If the text you are checking also has other problems, these Kakerio tools may help:
+        <a href="https://kakerio.com/en/tools/text-normalizer/" target="_blank" rel="noopener">Japanese Text Normalizer</a>
+        for full-width, half-width and kana forms,
+        <a href="https://kakerio.com/en/tools/mojibake-fixer/" target="_blank" rel="noopener">Mojibake Fixer</a>
+        for garbled text, and
+        <a href="https://kakerio.com/en/tools/csv-doctor/" target="_blank" rel="noopener">CSV Doctor</a>
+        for CSV files. Like WhatChar, they process your text in your browser.
       </p>
     </section>
   </main>

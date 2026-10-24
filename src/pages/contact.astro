@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Brand from '../components/Brand.astro';
 import '../styles/global.css';
 
 const title = 'Contact | WhatChar';
@@ -10,7 +11,7 @@ const contactEmail = 'contact@isitiorl.com';
 
 <BaseLayout title={title} description={description} lang="en" locale="en" path="/contact/">
   <header class="topbar">
-    <a class="brand" href="/" aria-label="WhatChar home">WhatChar</a>
+    <Brand />
   </header>
 
   <main class="page-shell">
