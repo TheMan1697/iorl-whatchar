@@ -93,3 +93,17 @@ public/
 ## License
 
 This project is built as a personal web utility.
+
+## Quality checks
+
+Run `npm ci`, then:
+
+```bash
+npm run test
+npm run build
+npm run verify:build
+```
+
+The unit tests cover ASCII lookalike false positives, deliberately ambiguous I/l/1 and O/0 characters, Unicode homoglyphs, invisible characters and code points. The post-build check verifies the seven public locale pages remain indexable, while the 404 page is noindex and has no canonical or SoftwareApplication structured data. GitHub Actions runs these checks on PRs and on main, without storing build artifacts.
+
+A regular ASCII letter can have lookalikes in the reference dictionary without itself being flagged as confusing. Deliberately ambiguous ASCII characters such as `I`, `l`, `1`, `O` and `0` continue to be flagged for inspection. The public `/404/` path can remain HTTP 200 under static Pages routing but must stay noindex; missing URLs should still return HTTP 404.

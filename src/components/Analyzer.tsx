@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { analyzeText, detectedScripts, type AnalyzedChar } from '../utils/analyzeText';
+import { analyzeText, detectedScripts, findConfusingCharacters, type AnalyzedChar } from '../utils/analyzeText';
 import { messages } from '../i18n/messages';
 import { localizeCharacterName, localizeScript } from '../i18n/analyzer';
 import type { Locale } from '../i18n/config';
@@ -150,14 +150,7 @@ export default function Analyzer({ locale }: AnalyzerProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const analysis = useMemo(() => analyzeText(input), [input]);
-  const suspicious = analysis.filter(
-  (item) =>
-    item.char !== ' ' &&
-    (item.isConfusable ||
-      item.isInvisible ||
-      Boolean(item.groupLabel) ||
-      item.lookalikes.length > 0)
-);
+  const suspicious = findConfusingCharacters(analysis);
   const scripts = detectedScripts(analysis);
   const mixedScripts = scripts.length > 1;
   const selected = selectedIndex == null ? suspicious[0] ?? analysis[0] : analysis[selectedIndex];

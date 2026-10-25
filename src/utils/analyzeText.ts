@@ -185,3 +185,12 @@ export function detectedScripts(chars: AnalyzedChar[]): string[] {
   const ignored = new Set(['ASCII punctuation', 'Invisible / special space']);
   return Array.from(new Set(chars.map((c) => c.script))).filter((script) => !ignored.has(script));
 }
+
+/**
+ * A dictionary entry can explain a lookalike without making the entered ASCII
+ * character suspicious. Keep the engine's deliberate I/l/1, O/0 and punctuation
+ * ambiguity rules, as well as non-ASCII homoglyphs and invisible characters.
+ */
+export function findConfusingCharacters(chars: AnalyzedChar[]): AnalyzedChar[] {
+  return chars.filter((item) => item.char !== ' ' && (item.isConfusable || item.isInvisible));
+}
