@@ -336,6 +336,8 @@ textarea:focus {
 
 .char-tooltip {
   position: absolute;
+  /* Do not intercept clicks on example buttons below a long tooltip. */
+  pointer-events: none;
   z-index: 20;
   left: 50%;
   bottom: calc(100% + 10px);
@@ -391,9 +393,9 @@ textarea:focus {
   margin-top: 5px;
 }
 
+/* The selected character already has a persistent dictionary-note below the result. */
 .result-char-wrap:hover .char-tooltip,
-.result-char:focus-visible + .char-tooltip,
-.result-char-wrap:has(.result-char.is-selected) .char-tooltip {
+.result-char:focus-visible + .char-tooltip {
   display: block;
 }
 
