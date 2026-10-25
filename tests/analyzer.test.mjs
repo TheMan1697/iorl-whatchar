@@ -1,22 +1,35 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createRequire } from 'node:module';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join } from 'node:path';
 import ts from 'typescript';
 
-// Transpile only the dependency-free text analyzer into a temporary CommonJS
-// tree. No Vitest/esbuild dependency or checked-in generated code is needed.
+// Compile a small, isolated copy of the analyzer under Node16 CommonJS rules.
+// Isolating it from this site's type:module package avoids changing production
+// TypeScript resolution or adding a separate test-runner dependency.
 const scratch = mkdtempSync(join(tmpdir(), 'whatchar-unit-'));
 let analyzer;
 try {
-  const program = ts.createProgram([resolve('src/utils/analyzeText.ts')], {
+  const sourceRoot = join(scratch, 'src');
+  const outputRoot = join(scratch, 'build');
+  for (const file of [
+    'data/confusables.ts',
+    'data/unicodeNames.ts',
+    'utils/detectScript.ts',
+    'utils/analyzeText.ts'
+  ]) {
+    const destination = join(sourceRoot, file);
+    mkdirSync(dirname(destination), { recursive: true });
+    copyFileSync(join('src', file), destination);
+  }
+  const program = ts.createProgram([join(sourceRoot, 'utils/analyzeText.ts')], {
     target: ts.ScriptTarget.ES2022,
-    module: ts.ModuleKind.CommonJS,
-    moduleResolution: ts.ModuleResolutionKind.Node10,
-    rootDir: resolve('src'),
-    outDir: scratch,
+    module: ts.ModuleKind.Node16,
+    moduleResolution: ts.ModuleResolutionKind.Node16,
+    rootDir: sourceRoot,
+    outDir: outputRoot,
     noEmitOnError: true,
     skipLibCheck: true
   });
@@ -29,7 +42,7 @@ try {
       getNewLine: () => '\n'
     }));
   }
-  analyzer = createRequire(import.meta.url)(join(scratch, 'utils/analyzeText.js'));
+  analyzer = createRequire(import.meta.url)(join(outputRoot, 'utils/analyzeText.js'));
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }
