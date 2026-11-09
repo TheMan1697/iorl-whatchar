@@ -8,7 +8,7 @@ It helps distinguish visually similar characters such as `I`, `l`, `1`, `O`, `0`
 
 ## Part of Kakerio
 
-WhatChar is a tool by [Kakerio](https://kakerio.com/en/), a family of small browser tools for text and CSV files. It keeps its own domain, isitiorl.com, and its own pages and SEO. The header's "by Kakerio" link and the "More tools from Kakerio" section open kakerio.com in the page's language (Japanese, Korean, English, Simplified Chinese, German; Spanish and French open the English pages), recommending Japanese Text Normalizer, Mojibake Fixer and CSV Doctor.
+WhatChar is a tool by [Kakerio](https://kakerio.com/en/), a family of browser-local utilities. Its shared contact is `contact@kakerio.com` (mail routing must be verified before publishing this change). It keeps its own domain, isitiorl.com, and its own pages and SEO. The header's "by Kakerio" link and the "More tools from Kakerio" section open kakerio.com in the page's language (Japanese, Korean, English, Simplified Chinese, German; Spanish and French open the English pages), recommending Japanese Text Normalizer, Mojibake Fixer and CSV Doctor.
 
 ## Features
 
