@@ -22,6 +22,14 @@ assert.match(notFound, /<meta\s+name="robots"\s+content="noindex, follow"/i, '40
 assert.doesNotMatch(notFound, /<link\s+rel="canonical"/i, '404 must not claim a canonical');
 assert.doesNotMatch(notFound, /application\/ld\+json/i, '404 must not claim SoftwareApplication schema');
 
+const contact = read('contact/index.html');
+const privacy = read('privacy/index.html');
+for (const [path, html] of [['contact/', contact], ['privacy/', privacy]]) {
+  assert.ok(html.includes('mailto:contact@kakerio.com'), path + ' must use the shared Kakerio inbox');
+  assert.ok(!html.includes('contact@isitiorl.com'), path + ' must not advertise the retired inbox');
+}
+assert.ok(contact.includes('https://isitiorl.com/contact/'), 'existing contact URL must remain canonical');
+
 const sitemap = read('sitemap.xml');
 for (const path of localePaths) {
   assert.ok(sitemap.includes('<loc>https://isitiorl.com' + path + '</loc>'), 'sitemap missing ' + path);

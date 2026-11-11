@@ -3,10 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Brand from '../components/Brand.astro';
 import '../styles/global.css';
 
-const title = 'Contact | WhatChar';
-const description = 'Contact WhatChar for feedback, bug reports, or questions about the Unicode character checker.';
-
-const contactEmail = 'contact@isitiorl.com';
+const title = 'Contact Kakerio about WhatChar';
+const description = 'Contact the Kakerio team about WhatChar questions, problems and feedback.';
+const contactEmail = 'contact@kakerio.com';
 ---
 
 <BaseLayout title={title} description={description} lang="en" locale="en" path="/contact/">
@@ -16,19 +15,23 @@ const contactEmail = 'contact@isitiorl.com';
 
   <main class="page-shell">
     <section class="seo-copy legal-page">
-      <h1>Contact</h1>
+      <h1>Contact Kakerio about WhatChar</h1>
 
       <p>
-        For feedback, bug reports, or questions about WhatChar, please contact:
+        WhatChar is a tool by <a href="https://kakerio.com/en/">Kakerio</a>.
+        For questions, accessibility issues or feedback about WhatChar, use our shared contact:
+      </p>
+
+      <p><a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+
+      <p>
+        Please do not email passwords, private documents, pasted source text or other
+        confidential material. A description of the steps and the browser you used is enough.
+        WhatChar never attaches your analyzed text to an email.
       </p>
 
       <p>
-        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-      </p>
-
-      <p>
-        If you find a confusing character that is not detected correctly, include the exact
-        text or character in your message so it can be reviewed.
+        The link opens your email application. No email is sent unless you choose to send it.
       </p>
     </section>
   </main>
